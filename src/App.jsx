@@ -2,19 +2,39 @@ import "./App.css";
 import { Navbar, Nav, Container, Row, Col } from "react-bootstrap";
 import data from "./Data";
 import { useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
+import Detail from "./pages/Detail";
 
 function App() {
   let [shoes, setShoes] = useState(data);
+  let navigate = useNavigate();
   return (
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Navbar.Brand
+            className="logo"
+            onClick={() => {
+              navigate("./");
+            }}
+          >
+            Navbar
+          </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("./detail");
+              }}
+            >
+              Cart
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -58,10 +78,37 @@ function App() {
               </div>
             }
           />
-          <Route path="/detail" element={<div>상세페이지임</div>} />
+          <Route path="/detail" element={<Detail />} />
+          <Route path="/about" element={<About />}>
+            <Route path="member" element={<div>멤버임</div>} />
+            <Route path="location" element={<div>위치정보임</div>} />
+          </Route>
+          <Route path="/event" element={<Event />}>
+            <Route path="one" element={<div>첫주문 양배추즙 공짜</div>}></Route>
+            <Route path="two" element={<div>생일 쿠폰 지급</div>}></Route>
+          </Route>
+          <Route path="*" element={<div>404page</div>} />
         </Routes>
       </div>
     </>
+  );
+}
+
+function Event() {
+  return (
+    <div>
+      <h4>오늘의 이벤트</h4>
+      <Outlet></Outlet>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div>
+      <h4>회사정보임</h4>
+      <Outlet></Outlet>
+    </div>
   );
 }
 
