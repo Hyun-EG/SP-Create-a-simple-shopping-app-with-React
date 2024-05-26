@@ -1,6 +1,28 @@
-function Detail() {
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+function Detail(props) {
+  useEffect(() => {
+    let a = setTimeout(() => {
+      setAlert(false);
+    }, 2000);
+    return () => {
+      clearTimeout(a);
+    };
+  }, []);
+
+  let { id } = useParams();
+  let product = props.shoes.find(function (x) {
+    return x.id == id;
+  });
+  let [count, setCount] = useState(0);
+  let [alert, setAlert] = useState(true);
+
   return (
     <div className="container">
+      {alert == true ? (
+        <div className="alert alert-warning">2초이내 구매시 할인</div>
+      ) : null}
       <div className="row">
         <div className="col-md-6">
           <img
@@ -9,9 +31,9 @@ function Detail() {
           />
         </div>
         <div className="col-md-6">
-          <h4 className="pt-5">상품명</h4>
-          <p>상품설명</p>
-          <p>120000원</p>
+          <h4 className="pt-5">{product.title}</h4>
+          <p>{product.content}</p>
+          <p>{product.price}원</p>
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
